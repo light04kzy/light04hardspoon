@@ -113,7 +113,7 @@ int Create(int freq, int volume, int durations)//频率、音量、持续时间
     MakeWaveData(pHeader->pwf.wf.nSamplesPerSec, freq, volume, pWaveBuffer+ WAVE_HEAD_LENGTH, m_samplefreq*durations);//采样点数
 
     ofstream ocout;
-    ocout.open("D:\\newWave.wav", ios::out | ios::binary);//以二进制形式打开文件
+    ocout.open("./newWave.wav", ios::out | ios::binary);//以二进制形式打开文件
     if (ocout)
         ocout.write(pWaveBuffer, totalLen);
     else
