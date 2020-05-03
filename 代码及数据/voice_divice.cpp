@@ -40,7 +40,8 @@ void calc_coeffs()
 {
   int n;
 
-  for(n = 0; n < MAX_BINS; n++){
+  for(n = 0; n < MAX_BINS; n++)
+  {
     coefs[n] = 2.0 * cos(2.0 * 3.141592654 * freqs[n] / SAMPLING_RATE);
   }
 }
