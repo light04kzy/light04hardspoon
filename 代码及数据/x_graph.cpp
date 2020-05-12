@@ -1,6 +1,6 @@
 //
 
-#include "stdafx.h"
+// #include "stdafx.h"
 
 
 
@@ -32,10 +32,10 @@ extern "C" {WINBASEAPI HWND WINAPI GetConsoleWindow();}
 
 #define DARKGRAY RGB(0xa9,0xa9,0xa9)
 #define YELLOW RGB(0xf0,0xe6,0x8c)
-//È«¾ÖÉùÃ÷GetConsoleWindow()º¯Êýµ÷ÓÃ·½Ê½¡£
+//È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½GetConsoleWindow()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã·ï¿½Ê½ï¿½ï¿½
 
 
-HWND hWndFather;//È«¾Ö
+HWND hWndFather;//È«ï¿½ï¿½
 //**********************************************************//
 ///////////////////////////////////////////////////////////////////////
 typedef struct tagWIN2{
@@ -49,7 +49,7 @@ typedef struct tagWIN2{
 WIN2 win2;
 
 
-#define LRTB_SPACE 25    //ÉèÖÃÄ¬ÈÏµÄÉÏÏÂ×óÓÒ±ß¿òÁô°×¡£ 
+#define LRTB_SPACE 25    //ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò±ß¿ï¿½ï¿½ï¿½ï¿½×¡ï¿½ 
 
 double ALPHA=3.1415926/8;
 double BEITA=3.1415926/6;
@@ -58,13 +58,13 @@ typedef struct tagWIN3{
 	HWND hwnd;
 	HDC hdc;
 	RECT rect;//,rect2;
-	//int xo,yo;//moveto3,linTo3ÓÃËü×ö0µã¡£
+	//int xo,yo;//moveto3,linTo3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0ï¿½ã¡£
 	char xstr[50],ystr[50],zstr[50];
 	double x1,y1,z1,x2,y2,z2;
 	double dxPerPixel,dyPerPixel,dzPerPixel;//dxPerPixel=1/xk,dyPerPixel=1/yk,dzPerPixel=1/zk.
-	double xPixels,yPixels,zPixels,gridPixels;//xPixelsÎª×ø±êÖáµÄ³¤¡£
+	double xPixels,yPixels,zPixels,gridPixels;//xPixelsÎªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½
 	//double tx1,tx2,tx3,tx4,ty1,ty2,ty3,ty4,tz1,tz2,tz3,tz4,tc1,tc2,tc3,tc4;
-	double t[4][4];//t[0][]=xÐÐ£¬t[1][]ÎªyÐÐ£¬t[2][]--z,t[3]--³£ÊýÐÐ¡£
+	double t[4][4];//t[0][]=xï¿½Ð£ï¿½t[1][]Îªyï¿½Ð£ï¿½t[2][]--z,t[3]--ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½
 }WIN3;
 WIN3 win3;
 
@@ -97,7 +97,7 @@ SHOWWIN;}
 
 
 ////////////////////////////////////////////////////////////////////
-//Ï¸È¥¾â³ÝÏß£¬¿í¶ÈÎª1¡£/////////////////////////////////////////////
+//Ï¸È¥ï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½Îª1ï¿½ï¿½/////////////////////////////////////////////
 void lineto1(HDC hdc,COLORREF bkcolor,COLORREF linecolor,int x,int y)
 {
 POINT currentPosition;MoveToEx(hdc,x,y,&currentPosition);
@@ -112,15 +112,15 @@ else if(y==y0){
 else{
 	int rf=GetRValue(linecolor),gf=GetGValue(linecolor),bf=GetBValue(linecolor);
 	int re=GetRValue(bkcolor)-rf,ge=GetGValue(bkcolor)-gf,be=GetBValue(bkcolor)-bf;
-	double k=(double)(y-y0)/(double)(x-x0),k2=1.0/k,t;//¼ÆËãÐ±ÂÊÔöÁ¿£¡
-	if(k>1.0||k<-1.0){//yÖ÷·½Ïò£¡
+	double k=(double)(y-y0)/(double)(x-x0),k2=1.0/k,t;//ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	if(k>1.0||k<-1.0){//yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(y0>y){temp=x0,x0=x,x=temp,temp=y0,y0=y,y=temp;}		
 		for(t=(double)x0;y0<=y;y0++,t+=k2)
 			{double e1=t-(int)t,e2=1-e1;
 			SetPixelV(hdc,(int)t,y0,RGB(ROUND(re*e1)+rf,ROUND(ge*e1)+gf,ROUND(be*e1)+bf));
 			SetPixelV(hdc,(int)t+1,y0,RGB(ROUND(re*e2)+rf,ROUND(ge*e2)+gf,ROUND(be*e2)+bf));}
 	}
-	if(-1.0<=k&&k<=1.0){//xÖ÷·½Ïò£¡
+	if(-1.0<=k&&k<=1.0){//xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(x0>x){temp=x0,x0=x,x=temp,temp=y0,y0=y,y=temp;}		
 		for(t=y0;x0<=x;x0++,t+=k)
 			{double e1=t-(int)t,e2=1-e1;
@@ -133,18 +133,18 @@ else{
 
 
 ///////////////////////////////////////////////////////////////////
-//Ïâ±ßÏß£¬½«(x0,y0)µ½(x1,y1)Ö±ÏßµÄ·Ç(cx,cy)µãËùÔÚ±ßÏâÒ»¸öÈ¥¾â³Ý±ß//
+//ï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½(x0,y0)ï¿½ï¿½(x1,y1)Ö±ï¿½ßµÄ·ï¿½(cx,cy)ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½Ò»ï¿½ï¿½È¥ï¿½ï¿½Ý±ï¿½//
 void purfleline(HDC hdc,COLORREF bkcolor,COLORREF linecolor,int x0,int y0,int x1,int y1,int cx,int cy)
 {
 #define MIN(a,b) ((a<b)?a:b)
 double t0,e0;
-//Èç¹ûk2=+-INF,Ôòk=0;ÈÔÄÜ±£Ö¤ÏÂÃæÕý³£¡£
+//ï¿½ï¿½ï¿½k2=+-INF,ï¿½ï¿½k=0;ï¿½ï¿½ï¿½Ü±ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 double k2=(double)(y1-y0)/(double)(x1-x0),k=-1.0/k2;
 int t;
 int rf=GetRValue(linecolor),gf=GetGValue(linecolor),bf=GetBValue(linecolor);
 int re=GetRValue(bkcolor)-rf,ge=GetGValue(bkcolor)-gf,be=GetBValue(bkcolor)-bf;
 
-	if(-1.0>k2||k2>1.0){//yÖ÷Ïò
+	if(-1.0>k2||k2>1.0){//yï¿½ï¿½ï¿½ï¿½
 			if(cx-x0-k*(cy-y0)>0){
 			if(y0>y1){t=x0,x0=x1,x1=t;t=y0,y0=y1,y1=t;}
 			for(t0=(double)x0;y0<=y1;y0++,t0-=k)
@@ -166,7 +166,7 @@ int re=GetRValue(bkcolor)-rf,ge=GetGValue(bkcolor)-gf,be=GetBValue(bkcolor)-bf;
 			}
 		}
 	}
-	if(-1.0<=k2&&k2<=1.0){//xÖ÷Ïò
+	if(-1.0<=k2&&k2<=1.0){//xï¿½ï¿½ï¿½ï¿½
 		if(cy-y0-k2*(cx-x0)>0)
 		{
 			if(x0>x1){t=x0,x0=x1,x1=t;t=y0,y0=y1,y1=t;}
@@ -197,7 +197,7 @@ void purfleline(HDC hdc,COLORREF bkcolor,COLORREF linecolor,POINT a,POINT b,POIN
 		   
 
 //////////////////////////////////////////////////////////////////
-//¼ýÍ·»æÖÆº¯Êý£¬´Óµãaµ½bµÄÓÐÏòÏß¶ÎÔÚbµã»æÒ»¸ö¼ýÍ·¡£///////////////
+//ï¿½ï¿½Í·ï¿½ï¿½ï¿½Æºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½aï¿½ï¿½bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¶ï¿½ï¿½ï¿½bï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½///////////////
 void arrowline(HDC hdc,int linewidth,COLORREF bkcolor,COLORREF linecolor,int ax,int ay,int bx,int by)
 {
 int arrowbottomwidth=3*linewidth,arrowhigth=4*linewidth;
@@ -235,7 +235,7 @@ st=arrowhigth/(sqrt(1+k*k));
 v[4].x=ROUND(bx+((bx>ax)?st:-st));
 v[4].y=ROUND(by-k*((bx>ax)?st:-st));
 }
-//v[0],v[1],v[2],v[6]µãÄæÊ±Õë¹¹³É¾ØÐÎ¡£v[3],v[4],v[5]ÄæÊ±Õë¹¹³É¼ýÍ·£¬v[4]ÊÇ¼ýÍ·¼â
+//v[0],v[1],v[2],v[6]ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ë¹¹ï¿½É¾ï¿½ï¿½Î¡ï¿½v[3],v[4],v[5]ï¿½ï¿½Ê±ï¿½ë¹¹ï¿½É¼ï¿½Í·ï¿½ï¿½v[4]ï¿½Ç¼ï¿½Í·ï¿½ï¿½
 
 HBRUSH brush=CreateSolidBrush(linecolor);
 HBRUSH oldbrush=(HBRUSH)SelectObject(hdc,brush);
@@ -249,15 +249,15 @@ int rf=GetRValue(linecolor),gf=GetGValue(linecolor),bf=GetBValue(linecolor);
 int re=GetRValue(bkcolor)-rf,ge=GetGValue(bkcolor)-gf,be=GetBValue(bkcolor)-bf;
 purfleline(hdc,bkcolor,linecolor,v[0],v[6],v[1]);
 purfleline(hdc,bkcolor,linecolor,v[1],v[2],v[0]);
-//»æÖÆ¶Ì±ß£º/////////////////////////////////////
+//ï¿½ï¿½ï¿½Æ¶Ì±ß£ï¿½/////////////////////////////////////
 purfleline(hdc,bkcolor,linecolor,v[0],v[1],v[6]);
-//»æÖÆ3µãµ½6µãµÄÏß¶Î£¬ÅÐ±ð¼Ó±ß·½ÏòÊ±ºòÒªµßµ¹¡£
+//ï¿½ï¿½ï¿½ï¿½3ï¿½ãµ½6ï¿½ï¿½ï¿½ï¿½ß¶Î£ï¿½ï¿½Ð±ï¿½Ó±ß·ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Òªï¿½ßµï¿½ï¿½ï¿½
 purfleline(hdc,bkcolor,linecolor,v[6],v[5],v[4]);
-//»æÖÆµã4µ½µã5µÄÏß±ß,ÅÐ±ð¼Ó±ß·½ÏòÊ±ºòÒªµßµ¹¡£
+//ï¿½ï¿½ï¿½Æµï¿½4ï¿½ï¿½ï¿½ï¿½5ï¿½ï¿½ï¿½ß±ï¿½,ï¿½Ð±ï¿½Ó±ß·ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Òªï¿½ßµï¿½ï¿½ï¿½
 purfleline(hdc,bkcolor,linecolor,v[2],v[3],v[4]);
-//»æÖÆµã6µ½µã7µÄÏß±ß
+//ï¿½ï¿½ï¿½Æµï¿½6ï¿½ï¿½ï¿½ï¿½7ï¿½ï¿½ï¿½ß±ï¿½
 purfleline(hdc,bkcolor,linecolor,v[3],v[4],v[5]);
-//»æÖÆµã5µ½µã7µÄÏß±ß
+//ï¿½ï¿½ï¿½Æµï¿½5ï¿½ï¿½ï¿½ï¿½7ï¿½ï¿½ï¿½ß±ï¿½
 purfleline(hdc,bkcolor,linecolor,v[4],v[5],v[3]);
 
 SelectObject(hdc,oldpen);
@@ -271,7 +271,7 @@ void arrowline(HDC hdc,int linewidth,COLORREF bkcolor,COLORREF linecolor,POINT a
 
 
 //////////////////////////////////////////////////////////////////
-//»­´ÖÏß£¨È¥¾â³Ý£©º¯Êý£¬width>=1./////////////////////////////////
+//ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½È¥ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½width>=1./////////////////////////////////
 void rectline(HDC hdc,int width,COLORREF bkcolor,COLORREF linecolor,double ax,double ay,double bx,double by)
 {
 #define MIN(a,b) ((a<b)?a:b)
@@ -297,7 +297,7 @@ x4=bx-width/(2.0*sqrt(1+k2*k2));y4=by-k2*width/(2*sqrt(1+k2*k2));
 }
 
 
-//11,12,--22,21µã¹¹³É¾ØÐÎ¡£Ïßx11x21(v[0]v[3])ÓëÏßx12x22(v[1]v[2])Æ½ÐÐ¡£Ïßx11x12(v[0]v[1])ÓëÏß21-22(v[3]v[2]Æ½ÐÐ¡£
+//11,12,--22,21ï¿½ã¹¹ï¿½É¾ï¿½ï¿½Î¡ï¿½ï¿½ï¿½x11x21(v[0]v[3])ï¿½ï¿½ï¿½ï¿½x12x22(v[1]v[2])Æ½ï¿½Ð¡ï¿½ï¿½ï¿½x11x12(v[0]v[1])ï¿½ï¿½ï¿½ï¿½21-22(v[3]v[2]Æ½ï¿½Ð¡ï¿½
 v[0].x=ROUND(x1);v[0].y=ROUND(y1);
 v[1].x=ROUND(x2);v[1].y=ROUND(y2);
 v[2].x=ROUND(x4);v[2].y=ROUND(y4);
@@ -320,7 +320,7 @@ double t0,t1,e0,e1;
 if(v[0].x!=v[3].x&&v[0].y!=v[3].y){
 	k=(double)(v[3].y-v[0].y)/(double)(v[3].x-v[0].x),k2=1.0/k;
 //	k2=-k2;
-	if(k>1.0||k<-1.0){//yÖ÷·½Ïò
+	if(k>1.0||k<-1.0){//yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(v[0].y>v[3].y){vt=v[0],v[0]=v[3],v[3]=vt,vt=v[1],v[1]=v[2],v[2]=vt;}
 		if(v[0].x>v[1].x){vt=v[0],v[0]=v[1],v[1]=vt,vt=v[3],v[3]=v[2],v[2]=vt;}
 		for(t0=(double)v[0].x,t1=(double)v[1].x;v[0].y<=v[3].y;t0+=k2,t1+=k2,v[0].y++,v[1].y++)
@@ -336,7 +336,7 @@ if(v[0].x!=v[3].x&&v[0].y!=v[3].y){
 		r=MIN(ROUND(re*e1)+rf,GetRValue(c)),g=MIN(ROUND(ge*e1)+gf,GetGValue(c)),b=MIN(ROUND(be*e1)+bf,GetBValue(c));
 		SetPixelV(hdc,(int)t1+1,v[1].y,RGB(r,g,b));
 		}}
-	if(-1<=k&&k<=1.0){//xÖ÷·½Ïò
+	if(-1<=k&&k<=1.0){//xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(v[0].x>v[3].x){vt=v[0],v[0]=v[3],v[3]=vt,vt=v[1],v[1]=v[2],v[2]=vt;}
 		if(v[0].y>v[1].y){vt=v[0],v[0]=v[1],v[1]=vt,vt=v[3],v[3]=v[2],v[2]=vt;}
 		for(t0=(double)v[0].y,t1=(double)v[1].y;v[0].x<=v[3].x;t0+=k ,t1+=k ,v[0].x++,v[1].x++)
@@ -352,14 +352,14 @@ if(v[0].x!=v[3].x&&v[0].y!=v[3].y){
 		SetPixelV(hdc,v[1].x,(int)t1+1,RGB(r,g,b));
 		}}
 
-//»æÖÆ¶Ì±ß£º
+//ï¿½ï¿½ï¿½Æ¶Ì±ß£ï¿½
 v[0].x=ROUND(x1);v[0].y=ROUND(y1);
 v[1].x=ROUND(x2);v[1].y=ROUND(y2);
 v[2].x=ROUND(x4);v[2].y=ROUND(y4);
 v[3].x=ROUND(x3);v[3].y=ROUND(y3);
 vt=v[0],v[0]=v[3],v[3]=v[2],v[2]=v[1],v[1]=vt;
 		k=(double)(v[3].y-v[0].y)/(double)(v[3].x-v[0].x),k2=1.0/k;
-	if(k>1.0||k<-1.0){//yÖ÷·½Ïò
+	if(k>1.0||k<-1.0){//yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(v[0].y>v[3].y){vt=v[0],v[0]=v[3],v[3]=vt,vt=v[1],v[1]=v[2],v[2]=vt;}
 		if(v[0].x>v[1].x){vt=v[0],v[0]=v[1],v[1]=vt,vt=v[3],v[3]=v[2],v[2]=vt;}
 		for(t0=(double)v[0].x,t1=(double)v[1].x;v[0].y<=v[3].y;t0+=k2,t1+=k2,v[0].y++,v[1].y++)
@@ -375,7 +375,7 @@ vt=v[0],v[0]=v[3],v[3]=v[2],v[2]=v[1],v[1]=vt;
 		SetPixelV(hdc,(int)t1,v[1].y,linecolor);
 		SetPixelV(hdc,(int)t1+1,v[1].y,RGB(r,g,b));
 		}}
-	if(-1<=k&&k<=1.0){//xÖ÷·½Ïò
+	if(-1<=k&&k<=1.0){//xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(v[0].x>v[3].x){vt=v[0],v[0]=v[3],v[3]=vt,vt=v[1],v[1]=v[2],v[2]=vt;}
 		if(v[0].y>v[1].y){vt=v[0],v[0]=v[1],v[1]=vt,vt=v[3],v[3]=v[2],v[2]=vt;}
 		for(t0=(double)v[0].y,t1=(double)v[1].y;v[0].x<=v[3].x;t0+=k ,t1+=k ,v[0].x++,v[1].x++)
@@ -392,7 +392,7 @@ vt=v[0],v[0]=v[3],v[3]=v[2],v[2]=v[1],v[1]=vt;
 		SetPixelV(hdc,v[1].x,(int)t1+1,RGB(r,g,b));
 		}}
 	}
-//ÕâÖÖÃè±ß·½Ê½Ð§¹ûºÜ²î£¬Ó¦¿¼ÂÇÓÃÍ¼ÏóÂË²¨·½Ê½¡£
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß·ï¿½Ê½Ð§ï¿½ï¿½ï¿½Ü²î£¬Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½Ê½ï¿½ï¿½
 #undef MIN
 }
 
@@ -411,11 +411,11 @@ void coord2(double x1,double y1,double x2,double y2)
 {
 //WIN2 a;
 if (x1>x2){win2.x2=x1;win2.x1=x2;}
-else if(x1==x2){printf("ºá×ø±êÉèÖÃ´íÎó£¡");_getch();exit(0);}
+else if(x1==x2){printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½");_getch();exit(0);}
 else {win2.x1=x1;win2.x2=x2;}
 
 if(y1>y2){win2.y2=y1;win2.y1=y2;}
-else if(y1==y2){printf("×Ý×ø±êÉèÖÃ´íÎó£¡");_getch();exit(0);}
+else if(y1==y2){printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½");_getch();exit(0);}
 else {win2.y1=y1;win2.y2=y2;}
 
 
@@ -448,9 +448,9 @@ void frame2(char xstr[],char ystr[])//,COLORREF color)
 //Polygon(win2.hdc,dd,3);
 SelectObject(win2.hdc,(HPEN )GetStockObject(BLACK_PEN));
 SelectObject(win2.hdc,(HBRUSH )GetStockObject(WHITE_BRUSH));//LTGRAY_BRUSH));
-Rectangle(win2.hdc,win2.rect.left,win2.rect.top,win2.rect.right,win2.rect.bottom);//Ê¹memdcÖ¸ÏòµÄÎ»Í¼±»Ë¢³ÉhuiÉ«¡£ 
+Rectangle(win2.hdc,win2.rect.left,win2.rect.top,win2.rect.right,win2.rect.bottom);//Ê¹memdcÖ¸ï¿½ï¿½ï¿½Î»Í¼ï¿½ï¿½Ë¢ï¿½ï¿½huiÉ«ï¿½ï¿½ 
 
-#define DGRID 20    //ÏóËØµãÊý/Ã¿×ø±ê¸ñ
+#define DGRID 20    //ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½/Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½
 /*
 char str[100]={0};
 
@@ -467,22 +467,22 @@ sprintf(str,"(%g,%g)",win2.x2,win2.y2);
 
 TextOut(win2.hdc,win2.rect2.right-8*strlen(str)+14,win2.rect2.top-18,(LPCWSTR)str,strlen(str));
 
-sprintf(str,"%s:%g/¸ñ",ystr,DGRID/(win2.yk));
+sprintf(str,"%s:%g/ï¿½ï¿½",ystr,DGRID/(win2.yk));
 TextOut(win2.hdc,win2.rect2.left,win2.rect2.top-18,(LPCWSTR)str,strlen(str));
-sprintf(str,"%s:%g/¸ñ",xstr,DGRID/(win2.xk));
+sprintf(str,"%s:%g/ï¿½ï¿½",xstr,DGRID/(win2.xk));
 TextOut(win2.hdc,win2.rect2.right-strlen(str)*8,win2.rect2.bottom+6,(LPCWSTR)str,strlen(str));
 
 */
 
 
-WCHAR str[100]={0};//WCHARÊÇ¿í×Ö·û´®£¨UNICODE¸ñÊ½£©¡£
-swprintf_s(str,100,L"(%g,%g)",win2.x1,win2.y1);//100ÊÇ»º´æstr´óÐ¡
+WCHAR str[100]={0};//WCHARï¿½Ç¿ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½UNICODEï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½
+swprintf_s(str,100,L"(%g,%g)",win2.x1,win2.y1);//100ï¿½Ç»ï¿½ï¿½ï¿½strï¿½ï¿½Ð¡
 TextOut(win2.hdc,win2.rect2.left,win2.rect2.bottom+6,(LPCWSTR)str,_tcslen(str));
 swprintf_s(str,100,L"(%g,%g)",win2.x2,win2.y2);
 TextOut(win2.hdc,win2.rect2.right-8*_tcslen(str)+14,win2.rect2.top-18,(LPCWSTR)str,_tcslen(str));
-swprintf_s(str,100,L"%S:%g/¸ñ",ystr,DGRID/(win2.yk));
+swprintf_s(str,100,L"%S:%g/ï¿½ï¿½",ystr,DGRID/(win2.yk));
 TextOut(win2.hdc,win2.rect2.left,win2.rect2.top-18,(LPCWSTR)str,_tcslen(str));
-swprintf_s(str,100,L"%S:%g/¸ñ",xstr,DGRID/(win2.xk));//S´óÐ´±íÃ÷xstrÊÇANSI×Ö·û´®
+swprintf_s(str,100,L"%S:%g/ï¿½ï¿½",xstr,DGRID/(win2.xk));//Sï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½xstrï¿½ï¿½ANSIï¿½Ö·ï¿½ï¿½ï¿½
 TextOut(win2.hdc,win2.rect2.right-_tcslen(str)*8,win2.rect2.bottom+6,(LPCWSTR)str,_tcslen(str));
 
 
@@ -529,7 +529,7 @@ Rectangle(win2.hdc,win2.rect2.left-1,win2.rect2.top-1,win2.rect2.right+1,win2.re
 sprintf_s(win2.xstr,50,xstr);
 sprintf_s(win2.ystr,50,ystr);
 //return 0;
-//printf("ÔÚ´Ë£¡£¡£¡");system("pause");
+//printf("ï¿½Ú´Ë£ï¿½ï¿½ï¿½ï¿½ï¿½");system("pause");
 
 //InvalidateRect(win2.hwnd,NULL,true);
 //UpdateWindow(win2.hwnd);
@@ -595,7 +595,7 @@ moveto2(t,func);\
 for(;t<win2.x2;t=t+win2.dxPerPixel)lineto2(t,func);\
 t=win2.x2;lineto2(t,func);}
 
-///±äÁ¿tÎÞÐèÒªÏÈÉùÃ÷¡£
+///ï¿½ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #define plotxy2(penColor,penWidth,t,func) \
 {HPEN pen=CreatePen(PS_SOLID,penWidth,penColor),oldpen=(HPEN)SelectObject(win2.hdc,pen);\
 _plotxy2(t,func);\
@@ -649,7 +649,7 @@ POINT3 pt3(double x,double y,double z)
 {POINT3 a;a.x=x;a.y=y;a.z=z;a.A[3]=1;return a; }
 
 
-void shift3(double dx,double dy,double dz)//Æ½ÒÆ×ø±ê¡£
+void shift3(double dx,double dy,double dz)//Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ê¡£
 {
  double RX[4][4]={0};//,beita=0.6;
 RX[0][0]=1;
@@ -664,7 +664,7 @@ int i,j;
 for(i=0;i<4;i++)for(j=0;j<4;j++)win3.t[i][j]=temp[i][j];
 }
 
-void shift3(POINT3 p[],int n,double dx,double dy,double dz)//ÔÚµ±Ç°×ø±êÏÂÆ½ÒÆÒ»×éµã¡£
+void shift3(POINT3 p[],int n,double dx,double dy,double dz)//ï¿½Úµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½Ò»ï¿½ï¿½ã¡£
 {
 int i;
 for(i=0;i<n;i++){
@@ -674,7 +674,7 @@ p[i].z=p[i].z-dz;}
 }
 
 
-void rx3(POINT3 p[],int n,double a)//aÊÇÐý×ª½Ç¶È¡£
+void rx3(POINT3 p[],int n,double a)//aï¿½ï¿½ï¿½ï¿½×ªï¿½Ç¶È¡ï¿½
 {
  double RX[4][4]={0};//,beita=0.6;
 RX[0][0]=1;
@@ -693,7 +693,7 @@ for(i=0;i<n;i++){
 
 }
 
-void rx3(double a)//aÊÇÐý×ª½Ç¶È,×ø±êÖá±ä»»¡£
+void rx3(double a)//aï¿½ï¿½ï¿½ï¿½×ªï¿½Ç¶ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä»»ï¿½ï¿½
 {
  double RX[4][4]={0};//,beita=0.6;
 RX[0][0]=1;
@@ -725,7 +725,7 @@ for(i=0;i<4;i++)for(j=0;j<4;j++)win3.t[i][j]=temp[i][j];
 }
 
 
-void ry3(POINT3 p[],int n,double a)//aÊÇÐý×ª½Ç¶È¡£
+void ry3(POINT3 p[],int n,double a)//aï¿½ï¿½ï¿½ï¿½×ªï¿½Ç¶È¡ï¿½
 {
 double RX[4][4]={0};//,beita=0.6;
 RX[0][0]=cos(a);
@@ -744,7 +744,7 @@ for(i=0;i<n;i++){
 
 }
 
-void ry3(double a)//aÊÇÐý×ª½Ç¶È,yÖá±ä»»¡£
+void ry3(double a)//aï¿½ï¿½ï¿½ï¿½×ªï¿½Ç¶ï¿½,yï¿½ï¿½ä»»ï¿½ï¿½
 {
  double RX[4][4]={0};//,beita=0.6;
 RX[0][0]=cos(a);
@@ -761,7 +761,7 @@ for(i=0;i<4;i++)for(j=0;j<4;j++)win3.t[i][j]=temp[i][j];
 }
 
 
-void rz3(POINT3 p[],int n,double a)//aÊÇÐý×ª½Ç¶È¡£
+void rz3(POINT3 p[],int n,double a)//aï¿½ï¿½ï¿½ï¿½×ªï¿½Ç¶È¡ï¿½
 {
 double RX[4][4]={0};//,beita=0.6;
 RX[0][0]=cos(a);
@@ -780,7 +780,7 @@ for(i=0;i<n;i++){
 
 }
 
-void rz3(double a)//aÊÇÐý×ª½Ç¶È¡£
+void rz3(double a)//aï¿½ï¿½ï¿½ï¿½×ªï¿½Ç¶È¡ï¿½
 {
  double RX[4][4]={0};//,beita=0.6;
 RX[0][0]=cos(a);
@@ -819,10 +819,10 @@ void rv3(double w,double x1,double y1,double z1,
 double x=x2-x1,y=y2-y1,z=z2-z1;
 double wy,wz;
 
-//Ê¸Á¿ÈÆyÖá×ª¶¯µ½xoyÆ½ÃæµÄ½Ç£º
+//Ê¸ï¿½ï¿½ï¿½ï¿½yï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½xoyÆ½ï¿½ï¿½Ä½Ç£ï¿½
 wy=atan2(z,x);
 
-//Ê¸Á¿ÈÆzÖáÔÚxoyÆ½ÃæÄÚ×ª¶¯µ½xÖáµÄ½Ç£º
+//Ê¸ï¿½ï¿½ï¿½ï¿½zï¿½ï¿½ï¿½ï¿½xoyÆ½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½xï¿½ï¿½Ä½Ç£ï¿½
 wz=atan2(y,sqrt(x*x+z*z));
 
 shift3(x1,y1,z1);
@@ -840,10 +840,10 @@ void rv3(POINT3 C[],int n,double w,double x1,double y1,double z1,
 double x=x2-x1,y=y2-y1,z=z2-z1;
 double wy,wz;
 
-//Ê¸Á¿ÈÆyÖá×ª¶¯µ½xoyÆ½ÃæµÄ½Ç£º
+//Ê¸ï¿½ï¿½ï¿½ï¿½yï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½xoyÆ½ï¿½ï¿½Ä½Ç£ï¿½
 wy=atan2(z,x);
 
-//Ê¸Á¿ÈÆzÖáÔÚxoyÆ½ÃæÄÚ×ª¶¯µ½xÖáµÄ½Ç£º
+//Ê¸ï¿½ï¿½ï¿½ï¿½zï¿½ï¿½ï¿½ï¿½xoyÆ½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½xï¿½ï¿½Ä½Ç£ï¿½
 wz=atan2(y,sqrt(x*x+z*z));
 
 shift3(C,n,x1,y1,z1);
@@ -859,7 +859,7 @@ shift3(C,n,-x1,-y1,-z1);
 
 
 
-void testRot()//²âÊÔÍ¨¹ý£¡£¡£¡
+void testRot()//ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 {
 HPEN hpen1=CreatePen(PS_SOLID,1,RGB(255,0,0));
 HPEN hpen2=CreatePen(PS_SOLID,1,RGB(0,255,0));
@@ -941,10 +941,10 @@ x=c[1].x;
 y=c[1].y;
 z=c[1].z;
 
-//Ê¸Á¿ÈÆyÖá×ª¶¯µ½xoyÆ½ÃæµÄ½Ç£º
+//Ê¸ï¿½ï¿½ï¿½ï¿½yï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½xoyÆ½ï¿½ï¿½Ä½Ç£ï¿½
 wy=atan2(z,x);
 
-//Ê¸Á¿ÈÆzÖáÔÚxoyÆ½ÃæÄÚ×ª¶¯µ½xÖáµÄ½Ç£º
+//Ê¸ï¿½ï¿½ï¿½ï¿½zï¿½ï¿½ï¿½ï¿½xoyÆ½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½xï¿½ï¿½Ä½Ç£ï¿½
 wz=atan2(y,sqrt(x*x+z*z));
 
 
@@ -958,17 +958,17 @@ rz3(c,3,-wz);//atan(sqrt(2)/2));///3.1415926/4);
 printf("\ndd=%f,%f,%f;\n",c[1].x,c[1].y,c[1].z);
 DRAWLINE
 
-//ÔÚÊ¸Á¿×ª¶¯µ½xÖáÒÔºó£¬ÇóÈÆÊ¸Á¿×ª¶¯w½Ç¶ÈµÄµãcµÄÐÂ×ø±ê¡£
+//ï¿½ï¿½Ê¸ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½Ê¸ï¿½ï¿½×ªï¿½ï¿½wï¿½Ç¶ÈµÄµï¿½cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê¡£
 
 
 double w=3.1415926/6;
 rx3(c,3,w);
 
-//»Ö¸´ÈÆz?
+//ï¿½Ö¸ï¿½ï¿½ï¿½z?
 rz3(c,3,wz);
 DRAWLINE3
 
-//»Ö¸´ÈÆy?
+//ï¿½Ö¸ï¿½ï¿½ï¿½y?
 ry3(c,3,-wy);
 DRAWLINE3
 
@@ -1026,15 +1026,15 @@ public:
 void coord3(double x1,double y1,double z1,double x2,double y2,double z2)
 {
 if (x1>x2){win3.x2=x1;win2.x1=x2;}
-else if(x1==x2){printf("x×ø±êÉèÖÃ´íÎó£¡");_getch();exit(1);}
+else if(x1==x2){printf("xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½");_getch();exit(1);}
 else {win3.x1=x1;win3.x2=x2;}
 
 if(y1>y2){win3.y2=y1;win3.y1=y2;}
-else if(y1==y2){printf("y×ø±êÉèÖÃ´íÎó£¡");_getch();exit(1);}
+else if(y1==y2){printf("yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½");_getch();exit(1);}
 else {win3.y1=y1;win3.y2=y2;}
 
 if(z1>z2){win3.z2=z1;win3.z1=z2;}
-else if(z1==z2){printf("z×ø±êÉèÖÃ´íÎó£¡");_getch();exit(1);}
+else if(z1==z2){printf("zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½");_getch();exit(1);}
 else {win3.z1=z1;win3.z2=z2;}
 /*
 GetClientRect(win3.hwnd,&win3.rect2);
@@ -1051,8 +1051,8 @@ double w,h;
 w=win3.rect.right-win3.rect.left;
 h=-win3.rect.top+win3.rect.bottom;
 
-//ÒòÎªÏÂÃæ×ø±êÌåÏµÊÇÏÈÈÆxÖá×ª30¶È½ÇÔÙÈÆyÖá×ª-30¶È½Ç£¬
-//ËùÒÔÖ»ÓÐyÖáµÄÍ¶Ó°ÊÇÆ½ÐÐÓë´°¿Ú×ÝÏò¡£×ø±êµÈ±ßÁ¢ÌåºÐµÄ±ß³¤×î´óÖ»ÓÐ´°¿Ú×ÝÏò¸ß¶ÈµÄÒ»°ë£º
+//ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½×ª30ï¿½È½ï¿½ï¿½ï¿½ï¿½ï¿½yï¿½ï¿½×ª-30ï¿½È½Ç£ï¿½
+//ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½yï¿½ï¿½ï¿½Í¶Ó°ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ë´°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È±ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ±ß³ï¿½ï¿½ï¿½ï¿½Ö»ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¶Èµï¿½Ò»ï¿½ë£º
 if(h>w)h=w;
 win3.xPixels=h/2.0;
 
@@ -1061,13 +1061,13 @@ win3.dxPerPixel=(win3.x2-win3.x1)/win3.xPixels;
 win3.dyPerPixel=(win3.y2-win3.y1)/win3.yPixels;
 win3.dzPerPixel=(win3.z2-win3.z1)/win3.zPixels;
 
-//ÉèÖÃ×ø±êÌåÏµÎªÆÁÄ»ÎïÀí×ø±ê£¬´ËÊ±×ø±êÔ­µãÔÚ»æÍ¼¿Í»§ÇøµÄ×óÉÏ½Ç£º
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÎªï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê£¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½Ú»ï¿½Í¼ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï½Ç£ï¿½
 win3.t[0][0]=1;win3.t[0][1]=0;win3.t[0][2]=0;win3.t[0][3]=0;
 win3.t[1][0]=0;win3.t[1][1]=1;win3.t[1][2]=0;win3.t[1][3]=0;
 win3.t[2][0]=0;win3.t[2][1]=0;win3.t[2][2]=0;win3.t[2][3]=0;
 win3.t[3][0]=0;win3.t[3][1]=0;win3.t[3][2]=0;win3.t[3][3]=1;
 
-//Æ½ÒÆÎïÀí×ø±êÔ­µãµ½»æÍ¼¿Í»§ÇøÖÐÐÄ£º
+//Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ãµ½ï¿½ï¿½Í¼ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½
 shift3((win3.rect.right+win3.rect.left)/2.0,-(win3.rect.top+win3.rect.bottom)/2.0,0);
 
 
@@ -1077,10 +1077,10 @@ rx3(-3.1415926/2);
 //rz3(-3.415926/2);
 
 
-//½«ÓÃ»§×ø±ê±ÈÀý±ä»»µ½ÎïÀí×ø±ê£¬Ê¹´°¿Ú×ø±ê±ä³ÉÓÃ»§×ø±êÌåÏµ£º
+//ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä»»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê£¬Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½
 sxyz3(1.0/win3.dxPerPixel,1.0/win3.dyPerPixel,1.0/win3.dzPerPixel);
 
-//ÔÚÓÃ»§×ø±êÏÂ£¬ÒÆ¶¯µ÷Õû×ø±êÔ­µãÎ»ÖÃ£º
+//ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½Î»ï¿½Ã£ï¿½
 shift3(-(win3.x1+win3.x2)/2,-(win3.y1+win3.y2)/2,-(win3.z1+win3.z2)/2);
 
 win3.gridPixels=5;
@@ -1093,7 +1093,7 @@ void coord3(POINT3 a,POINT3 b)
 
 void frame3(COLORREF bkcolor,COLORREF dotLineColor,char *xstr,char *ystr,char *zstr)
 {
-//bkcolorÃ»Ê¹ÓÃ£¬dotLinecolor±»Ê¹ÓÃÁË£¬±³¾°Îª°×É«¡£
+//bkcolorÃ»Ê¹ï¿½Ã£ï¿½dotLinecolorï¿½ï¿½Ê¹ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½É«ï¿½ï¿½
 /*
 POINT v[6];
 v[0].x=ux3(win3.x1,win3.y1,win3.z1),v[0].y=uy3(win3.x1,win3.y1,win3.z1);
@@ -1118,14 +1118,14 @@ HBRUSH oldbrush=(HBRUSH)SelectObject(win3.hdc,brush);
 
 SelectObject(win3.hdc,(HPEN )GetStockObject(WHITE_PEN));
 SelectObject(win3.hdc,(HBRUSH )GetStockObject(WHITE_BRUSH));
-Rectangle(win3.hdc,win3.rect.left,win3.rect.top,win3.rect.right,win3.rect.bottom);//Çå°×»æÍ¼ÇøÓò¡£ 
+Rectangle(win3.hdc,win3.rect.left,win3.rect.top,win3.rect.right,win3.rect.bottom);//ï¿½ï¿½×»ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ 
 
 
 //char str[50]={0};
 
 /*
 
-swprintf_s(str,100,L"(%g,%g)",win2.x1,win2.y1);//100ÊÇ»º´æstr´óÐ¡
+swprintf_s(str,100,L"(%g,%g)",win2.x1,win2.y1);//100ï¿½Ç»ï¿½ï¿½ï¿½strï¿½ï¿½Ð¡
 TextOut(win2.hdc,win2.rect2.left,win2.rect2.bottom+6,(LPCWSTR)str,_tcslen(str));
 
 */
@@ -1161,7 +1161,7 @@ TextOut(win3.hdc,m.x,m.y,(LPCWSTR)str,strlen(str));
 
 
 */
-WCHAR str[100]={0};//WCHARÊÇ¿í×Ö·û´®£¨UNICODE¸ñÊ½£©¡£
+WCHAR str[100]={0};//WCHARï¿½Ç¿ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½UNICODEï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½
 
 
 swprintf_s(str,100,L" (%g,%g,%g)",win3.x1,win3.y1,win3.z1);
@@ -1233,7 +1233,7 @@ sprintf_s(win3.zstr,50,zstr);
 //SelectObject(win3.hdc,oldbrush);DeleteObject(brush);
 }
 /*
-//Ç³»ÒÉ«»­±Ê
+//Ç³ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½
 line3(win3.x1,win3.y1,win3.z1,win3.x2,win3.y1,win3.z1);
 lineto3(win3.x2,win3.y2,win3.z1);
 lineto3(win3.x2,win3.y2,win3.z2);
@@ -1243,7 +1243,7 @@ lineto3(win3.x1,win3.y1,win3.z1);
 
 HPEN hPen2=CreatePen(PS_DOT, 1, dotLineColor);
 SelectObject(win3.hdc, hPen2);
-//Ç³»ÒÉ«»­±Ê
+//Ç³ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½
  lineto3(win3.x1,win3.y2,win3.z1);
  lineto3(win3.x2,win3.y2,win3.z1);
 line3(win3.x1,win3.y2,win3.z1,win3.x1,win3.y2,win3.z2);
@@ -1289,23 +1289,23 @@ arrow3(RGB(0,0,0),0,0,win3.z1,0,0,win3.z2,h,d2);*/
 
 void initgraph00(WCHAR title[],int x,int y,int width,int higth)
 {
-system("color f0");//ÉèÖÃ¿ØÖÆÌ¨´°¿Ú±³¾°Îª°×É«£¬Ç°¾°ÎªºÚÉ«¡£
-//_getch();//system("pause");//ÔÝÍ£
+system("color f0");//ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½Îªï¿½ï¿½É«ï¿½ï¿½Ç°ï¿½ï¿½Îªï¿½ï¿½É«ï¿½ï¿½
+//_getch();//system("pause");//ï¿½ï¿½Í£
 
 CONSOLE_CURSOR_INFO cursor_info = {1, 0}; 
 SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
-//Òþ²Ø¿ØÖÆÌ¨¹â±ê£¬±ÜÃâ¸ÉÈÅÍ¼Ïó
+//ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½ê£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
 //_getch();
 HWND hWnd=GetConsoleWindow();
-HDC hDC=GetDC(hWnd);//Í¨¹ý´°¿Ú¾ä±úµÃµ½¸Ã´°¿ÚµÄÉè±¸³¡¾³¾ä±ú
+HDC hDC=GetDC(hWnd);//Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ã´ï¿½ï¿½Úµï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-SetConsoleTitle((LPCWSTR)title);//ÐÞ¸Ä´°¿Ú±êÌâ¡£
+SetConsoleTitle((LPCWSTR)title);//ï¿½Þ¸Ä´ï¿½ï¿½Ú±ï¿½ï¿½â¡£
 SetWindowPos(hWnd,HWND_TOPMOST ,x,y,width,higth,SWP_SHOWWINDOW|SWP_NOCOPYBITS
 			 ); 
 SetWindowLong(hWnd,//handletowindow
 GWL_STYLE,//intnlndex,//offsetofvaluetoset
 WS_POPUP//WS_POPUPWINDOW//WS_OVERLAPPEDWINDOW//CS_HREDRAW | CS_VREDRAW//LVS_ICON// LVS_SMALLICON LVS_LIST LVS_REPORT LONGdwNewLong//newvalue
-);//ÐÞ¸Ä´°¿Ú·ç¸ñ¡£
+);//ï¿½Þ¸Ä´ï¿½ï¿½Ú·ï¿½ï¿½
 
   
 RECT r;
@@ -1319,24 +1319,24 @@ win2.rect=r;win3.rect=r;
 
 void initgraph(WCHAR title[],int x,int y,int width,int higth)
 {
-system("color f0");//ÉèÖÃ¿ØÖÆÌ¨´°¿Ú±³¾°Îª°×É«£¬Ç°¾°ÎªºÚÉ«¡£
-//_getch();//system("pause");//ÔÝÍ£
+system("color f0");//ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½Îªï¿½ï¿½É«ï¿½ï¿½Ç°ï¿½ï¿½Îªï¿½ï¿½É«ï¿½ï¿½
+//_getch();//system("pause");//ï¿½ï¿½Í£
 
 CONSOLE_CURSOR_INFO cursor_info = {1, 0}; 
 SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
-//Òþ²Ø¿ØÖÆÌ¨¹â±ê£¬±ÜÃâ¸ÉÈÅÍ¼Ïó
+//ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½ê£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
 //_getch();
 HWND hWnd=GetConsoleWindow();
-HDC hDC=GetDC(hWnd);//Í¨¹ý´°¿Ú¾ä±úµÃµ½¸Ã´°¿ÚµÄÉè±¸³¡¾³¾ä±ú
+HDC hDC=GetDC(hWnd);//Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ã´ï¿½ï¿½Úµï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-SetConsoleTitle((LPCWSTR)title);//ÐÞ¸Ä´°¿Ú±êÌâ¡£
+SetConsoleTitle((LPCWSTR)title);//ï¿½Þ¸Ä´ï¿½ï¿½Ú±ï¿½ï¿½â¡£
 SetWindowPos(hWnd,HWND_TOPMOST ,x,y,width,higth,SWP_SHOWWINDOW|SWP_NOCOPYBITS
 			 ); 
 /*
 SetWindowLong(hWnd,//handletowindow
 GWL_STYLE,//intnlndex,//offsetofvaluetoset
 WS_POPUP//WS_POPUPWINDOW//WS_OVERLAPPEDWINDOW//CS_HREDRAW | CS_VREDRAW//LVS_ICON// LVS_SMALLICON LVS_LIST LVS_REPORT LONGdwNewLong//newvalue
-);//ÐÞ¸Ä´°¿Ú·ç¸ñ¡£
+);//ï¿½Þ¸Ä´ï¿½ï¿½Ú·ï¿½ï¿½
 */
 
   
@@ -1351,7 +1351,7 @@ win2.rect=r;win3.rect=r;
 
 
 
-///Ä£·Âº¯Êý·½Ê½£¬±äÁ¿x,yÐèÒªÏÈÉùÃ÷¡£
+///Ä£ï¿½Âºï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½x,yï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #define _plotxyz3(x,y,fxy) \
 {double x,y,grid=win3.gridPixels*win3.dyPerPixel;\
 for(y=win3.y1;y<=win3.y2;y=y+grid)\
@@ -1376,7 +1376,7 @@ lineto3(x,y,fxy);}\
 
 
 
-///Ä£·Âº¯Êý·½Ê½£¬±äÁ¿x,yÐèÒªÏÈÉùÃ÷¡£
+///Ä£ï¿½Âºï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½x,yï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #define plotxyz3(penColor,penWidth,x,y,fxy) \
 {HPEN hPen=CreatePen(PS_SOLID, penWidth, penColor);\
 HPEN hOldPen=(HPEN)SelectObject(win3.hdc, hPen);\
@@ -1448,19 +1448,19 @@ public:
 //	double x1,y1,x2,y2;
 //	double xk,yk,dxPerPixel,dyPerPixel;
 public:
-	winx(USEWIN win=USE_CONSOLE,char *title="xxgcÊµÑéÆ½Ì¨",int x0=0,int y0=0,int width=800,int height=600){
+	winx(USEWIN win=USE_CONSOLE,char *title="xxgcÊµï¿½ï¿½Æ½Ì¨",int x0=0,int y0=0,int width=800,int height=600){
 		hinstance=(HINSTANCE)GetModuleHandle(NULL);
 		if(win==USE_CONSOLE){
-				system("color f0");//ÉèÖÃ¿ØÖÆÌ¨´°¿Ú±³¾°Îª°×É«£¬Ç°¾°ÎªºÚÉ«¡£
+				system("color f0");//ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½Îªï¿½ï¿½É«ï¿½ï¿½Ç°ï¿½ï¿½Îªï¿½ï¿½É«ï¿½ï¿½
 
 				CONSOLE_CURSOR_INFO cursor_info = {1, 0}; 
 				SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
-				//Òþ²Ø¿ØÖÆÌ¨¹â±ê£¬±ÜÃâ¸ÉÈÅÍ¼Ïó
+				//ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½ê£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
 
 				hwnd0=GetConsoleWindow();
-				hdc0=GetDC(hwnd0);//Í¨¹ý´°¿Ú¾ä±úµÃµ½¸Ã´°¿ÚµÄÉè±¸³¡¾³¾ä±ú
+				hdc0=GetDC(hwnd0);//Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ã´ï¿½ï¿½Úµï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-				SetConsoleTitle((LPCWSTR)title);//ÐÞ¸Ä´°¿Ú±êÌâ¡£
+				SetConsoleTitle((LPCWSTR)title);//ï¿½Þ¸Ä´ï¿½ï¿½Ú±ï¿½ï¿½â¡£
 				SetWindowPos(hwnd0,HWND_TOPMOST,x0,y0,width,height,SWP_SHOWWINDOW);   
 
 //win2.hwnd=hWnd;win2.hdc=hDC;
@@ -1533,7 +1533,7 @@ coord3(x1,y1,z1,x2,y2,z2);
 frame3(LIGHTGRAY,BLACK,xAxis,yAxis,zAxis);
 }
 
-//Çå³ýÈýÎ¬ÓÃ»§´°¿ÚµÄÍ¼ÐÎ¡£
+//ï¿½ï¿½ï¿½ï¿½ï¿½Î¬ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Úµï¿½Í¼ï¿½Î¡ï¿½
 void clear3()
 {
 SelectObject(win3.hdc,(HPEN )GetStockObject(BLACK_PEN));
@@ -1568,7 +1568,7 @@ HPEN pen4=CreatePen(PS_SOLID,1,RED);SelectObject(win3.hdc,pen4);
 	MoveToEx(win3.hdc,x1,y-5,NULL);
 	LineTo(win3.hdc,x1,y+5);
 
-SelectObject(win3.hdc,oldpen);//»Ö¸´Ô­À´µÄ±Ê.
+SelectObject(win3.hdc,oldpen);//ï¿½Ö¸ï¿½Ô­ï¿½ï¿½ï¿½Ä±ï¿½.
 DeleteObject(pen1);
 DeleteObject(pen2);
 DeleteObject(pen3);
@@ -1599,7 +1599,7 @@ HPEN pen4=CreatePen(PS_SOLID,1,RED);SelectObject(win3.hdc,pen4);
 	MoveToEx(win2.hdc,x1,y-5,NULL);
 	LineTo(win2.hdc,x1,y+5);
 
-SelectObject(win2.hdc,oldpen);//»Ö¸´Ô­À´µÄ±Ê.
+SelectObject(win2.hdc,oldpen);//ï¿½Ö¸ï¿½Ô­ï¿½ï¿½ï¿½Ä±ï¿½.
 DeleteObject(pen1);
 DeleteObject(pen2);
 DeleteObject(pen3);
@@ -1607,13 +1607,13 @@ DeleteObject(pen4);
 }
 
 
-//¸Ãº¯ÊýÎªÑ­»·¶ÁÈ¡¼üÅÌÊäÈë£¬ÇÃESC¼ü£¬º¯Êý½áÊøÑ­»·ÍË³ö¡£
-//ÇÃ+=.>ËÄ¼ü£¬º¯Êý°´(b-a)/nµÄÁ¿Ôö¼Óx[0]ÖÐµÄÊýÖµ¡£
-//ÇÃ_-,<ËÄ¼ü£¬º¯Êý°´(b-a)/nµÄÁ¿¼õÉÙx[0]ÖÐµÄÊýÖµ¡£
+//ï¿½Ãºï¿½ï¿½ï¿½ÎªÑ­ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ESCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½
+//ï¿½ï¿½+=.>ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(b-a)/nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½x[0]ï¿½Ðµï¿½ï¿½ï¿½Öµï¿½ï¿½
+//ï¿½ï¿½_-,<ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(b-a)/nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½x[0]ï¿½Ðµï¿½ï¿½ï¿½Öµï¿½ï¿½
 BOOL keyCtr2(double x[1],double a,double b,int n)
 {
 	int k=0;double dx;
-	if(n==0||b==a){printf("keyCtr()ÊäÈë²ÎÊý´íÎó£¡\n");exit(1);}
+	if(n==0||b==a){printf("keyCtr()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");exit(1);}
 	dx=(b-a)/n;
 for(;k!=27;k=_getch())
 	{    if(k=='+'||k=='='||k=='.'||k=='>'){x[0]+=dx;x[0]=(x[0]>b)?b:x[0];}
@@ -1643,7 +1643,7 @@ HPEN pen4=CreatePen(PS_SOLID,1,RED);SelectObject(win3.hdc,pen4);
 	MoveToEx(win2.hdc,x1+(int)((x[0]-a)/dx*100/n+0.5),y-5,NULL);
    	LineTo(win2.hdc,x1+(int)((x[0]-a)/dx*100/n+0.5),y+5);
 
-SelectObject(win2.hdc,oldpen);//»Ö¸´Ô­À´µÄ±Ê.
+SelectObject(win2.hdc,oldpen);//ï¿½Ö¸ï¿½Ô­ï¿½ï¿½ï¿½Ä±ï¿½.
 DeleteObject(pen1);
 DeleteObject(pen2);
 DeleteObject(pen3);
@@ -1656,7 +1656,7 @@ return false;
 BOOL keyCtr3(double x[1],double a,double b,int n)
 {
 	int k=0;double dx;
-	if(n==0||b==a){printf("keyCtr()ÊäÈë²ÎÊý´íÎó£¡\n");exit(1);}
+	if(n==0||b==a){printf("keyCtr()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");exit(1);}
 	dx=(b-a)/n;
 for(;k!=27;k=_getch())
 	{    if(k=='+'||k=='='||k=='.'||k=='>'){x[0]+=dx;x[0]=(x[0]>b)?b:x[0];}
@@ -1686,7 +1686,7 @@ HPEN pen4=CreatePen(PS_SOLID,1,RED);SelectObject(win3.hdc,pen4);
 	MoveToEx(win3.hdc,x1+(int)((x[0]-a)/dx*100/n+0.5),y-5,NULL);
    	LineTo(win3.hdc,x1+(int)((x[0]-a)/dx*100/n+0.5),y+5);
 
-SelectObject(win3.hdc,oldpen);//»Ö¸´Ô­À´µÄ±Ê.
+SelectObject(win3.hdc,oldpen);//ï¿½Ö¸ï¿½Ô­ï¿½ï¿½ï¿½Ä±ï¿½.
 DeleteObject(pen1);
 DeleteObject(pen2);
 DeleteObject(pen3);
@@ -1698,7 +1698,7 @@ return false;
 
 
 
-//Ö»Çå³ý»æÍ¼Çø
+//Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
 void clearvp2(){
 HBRUSH oldbrush=(HBRUSH)SelectObject(win2.hdc,(HBRUSH )GetStockObject(WHITE_BRUSH));
 HPEN oldpen=(HPEN)SelectObject(win2.hdc,(HPEN )GetStockObject(BLACK_PEN));
@@ -1734,9 +1734,9 @@ HPEN pen3=CreatePen(PS_SOLID,1,BLACK);SelectObject(win3.hdc,pen3);
 int gg=(int)((*x-a)/(b-a)*100);
 HPEN pen4=CreatePen(PS_SOLID,1,RED);SelectObject(win3.hdc,pen4);
 	MoveToEx(win3.hdc,x1+gg,y-5,NULL);
-	LineTo(win3.hdc,x1+gg,y+5);//»­ºìÎ»ÖÃ±ê¼ÇÏß
+	LineTo(win3.hdc,x1+gg,y+5);//ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã±ï¿½ï¿½ï¿½ï¿½
 
-SelectObject(win3.hdc,oldpen);//»Ö¸´Ô­À´µÄ±Ê.
+SelectObject(win3.hdc,oldpen);//ï¿½Ö¸ï¿½Ô­ï¿½ï¿½ï¿½Ä±ï¿½.
 DeleteObject(pen1);
 DeleteObject(pen2);
 DeleteObject(pen3);
@@ -1747,7 +1747,7 @@ DeleteObject(pen4);
 BOOL keyCtr(double x[1],double a,double b,int n)
 {
 	int k=0;double dx;
-	if(n==0||b==a){printf("keyCtr()ÊäÈë²ÎÊý´íÎó£¡\n");exit(1);}
+	if(n==0||b==a){printf("keyCtr()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");exit(1);}
 	dx=(b-a)/n;
 for(;k!=27;k=_getch())
 	{    if(k=='+'||k=='='||k=='.'||k=='>'){x[0]+=dx;x[0]=(x[0]>b)?b:x[0];}
@@ -1765,4 +1765,4 @@ return false;
 //////////////////////////////////
 //////////////////////////////////////
 //////////////////////////////////////
-////////////ÒÔÏÂÎª²âÊÔÇø/////////////
+////////////ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/////////////
