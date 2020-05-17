@@ -1,0 +1,22 @@
+﻿生成启动时间为 2020/5/17 15:33:26。
+     1>项目“E:\被迫开始用这个电脑做的学业\信号处理工程\期末\final2\final2\final2.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在对“Debug\final2.unsuccessfulbuild”执行 Touch 任务。
+       ClCompile:
+         所有输出均为最新。
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\final2.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt final2.cpp
+         final2.cpp
+     1>e:\被迫开始用这个电脑做的学业\信号处理工程\期末\final2\final2\final2.cpp(4): warning C4627: “#include "math.h"”: 在查找预编译头使用时跳过
+                 将指令添加到“StdAfx.h”或重新生成预编译头
+     1>e:\被迫开始用这个电脑做的学业\信号处理工程\期末\final2\final2\final2.cpp(5): warning C4627: “#include "conio.h"”: 在查找预编译头使用时跳过
+                 将指令添加到“StdAfx.h”或重新生成预编译头
+     1>e:\被迫开始用这个电脑做的学业\信号处理工程\期末\final2\final2\final2.cpp(6): warning C4627: “#include "string.h"”: 在查找预编译头使用时跳过
+                 将指令添加到“StdAfx.h”或重新生成预编译头
+     1>e:\被迫开始用这个电脑做的学业\信号处理工程\期末\final2\final2\final2.cpp(7): warning C4627: “#include "windows.h"”: 在查找预编译头使用时跳过
+                 将指令添加到“StdAfx.h”或重新生成预编译头
+     1>e:\被迫开始用这个电脑做的学业\信号处理工程\期末\final2\final2\final2.cpp(191): fatal error C1010: 在查找预编译头时遇到意外的文件结尾。是否忘记了向源中添加“#include "StdAfx.h"”?
+     1>已完成生成项目“E:\被迫开始用这个电脑做的学业\信号处理工程\期末\final2\final2\final2.vcxproj”(build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:00.16
