@@ -1,0 +1,481 @@
+解引用空指针 在运行期的什么时候会导致崩溃？
+struct S {
+    int *ptr = nullptr;
+    int& get() {
+        return *ptr;
+    }
+};
+
+int main() {
+    S s;
+    int& t = s.get();
+    if (&t) {
+        // Do something to use t
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+这段代码会不会崩溃？
+理论上，这段代码在 get() 就应该崩溃，因为 ptr 是一个 空指针，解引空指针会导致段错误。
+但是，实际上，在编译时，由于引用通常会以指针的形式传递，所以 s.get() 会将 ptr 传给 t ，这个时候 t 就是一个对 nullptr 的 int& 引用。
+对 &t 求值出来的结果是 nullptr ，if (&t) 的结果为 false，会跳过使用 t 的代码，所以， t 可能根本没有被使用，所以程序运行时并没有崩溃！
+但会有一种崩溃的情况，那就是开启优化后。
+clang 开启优化后，会认为 t 一定是一个 非空的引用 ，所以 if (&t) 必然为 true ，会将其优化掉，那么一定会运行使用了 t 的代码。这种情况下，程序一定会崩溃！
+这种情况下，小项目还好说，如果有许多层传递关系，那么很有可能在十公里外看起来毫无关系的某处崩掉；更何况因为开启了优化，也增大了调试的难度。
+本人实际测试，gcc （到 8.0）无论是否开启 -O2 优化，都不会崩溃；而 clang 的 3.6 版本就会由于 -O2 优化而崩溃，不优化不会崩溃。可见 -O2 下，clang 比 gcc 多了个对引用判断地址的优化……
+以上事例（这个是实际项目中产生的）告诉我们，不要随意地对空指针解引，运行期通常不会直接在解引处崩溃，而是会在几公里外的某个使用的地方崩溃。
+另：对于 if (&t) 这个写法，clang 是有 Warning 警告的……可见关注 Warning 的重要性……
+另2：测试代码：
+
+#include <iostream>
+using namespace std;
+
+struct S {
+    int *ptr = nullptr;
+    int& get() {
+        return *ptr;
+    }
+};
+
+int main() {
+    S s;
+    int& t = s.get();
+    cout << ((&t) ? "Yes" : "No") << endl;
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+g++ test.cpp -std=c++11 -o test && ./test      # No
+g++ test.cpp -std=c++11 -O2 -o test && ./test  # No
+clang++ test.cpp -std=c++11 -o test && ./test  # No
+clang++ test.cpp -std=c++11 -O2 -o test && ./test  # Yes
+1
+2
+3
+4
+库函数编写，效率具有误导性（用户易将O(n)误认为O(1)）导致的性能问题
+通常，我们会对一个函数有着潜认识，比如认为容器的 size() 函数具有 O(1) 的效率。
+但当库函数的实现打破这一潜认识，比如一个 size() 函数具有 O(n) 的效率，可能会对库使用者造成误导，编写程序时可能会造成严重的效率问题。
+比如一个列表，size() 是 O(n) 的，我们误认为它是 O(1) 的，可能会编写如下代码：
+
+for (size_t i = 0; i < list.size(); i++) {
+  // Do something
+}
+1
+2
+3
+如果 size() 是 O(1) 的，那么整段代码是 O(n) 的；但如果 size() 是 O(n) 的，那么整段代码将会变成 O(n ^ 2) ，这会造成严重的性能问题。
+库函数的编写要有着许多考量，在设计时要对应用场景有所估计，如果确实不能达到理想情况，也要用明显的方式来提醒用户，这样才能编写出一个良好的库。
+
+2018.7.28
+
+使用 std::swap 而不是临时变量的赋值进行交换操作
+今天测试了一段C++代码，生成 第 1000000 的斐波那契数， 使用了 GMP 库。
+
+mpz_class a = 1, b = 1;
+for (int i = 2; i < 1000000; i++) {
+    mpz_class t = b;
+    b = a + b;
+    a = t;
+}
+1
+2
+3
+4
+5
+6
+发现，有一个类似的代码，时间居然是这个的一半。
+分析后发现，那段代码每次只有一个加法赋值的操作，而我这个有一次加法三次赋值。mpz_class 处理大整数速度还是比较慢的，这两次赋值就影响了性能。
+
+随后，改写如下：
+
+mpz_class a = 1, b = 1;
+for (int i = 2; i < 1000000; i++) {
+    std::swap(a, b);
+    b = a + b;
+}
+1
+2
+3
+4
+5
+运行时间不到之前版本的一半。
+
+这是因为 std::swap 对于不同的类型有着相关的优化，专门化的处理自然要比随便写的赋值交换要强。
+
+因此，需要交换的场合，要尽量使用 std::swap 。
+
+2018.3.20
+
+面向对象模型，基类需添加 virtual 析构函数
+在优化 CVM 时发现，析构 parser 时，有一半内存没有成功释放。后来发现是 Instruction 基类没有添加虚析构函数。这可能会导致内存泄漏。
+
+class Base
+{
+public:
+    virtual ~Base() {} // 不加此行，Class 实例的 data 不能成功释放。
+};
+
+struct Test
+{
+    ~Test() { std::printf("%s", "~Test()"); }
+};
+class Class : public Base
+{
+public:
+    Class() : data(new Test()) {}
+    std::shared<Test> data;
+};
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+2018.1.23
+
+按行读取文本文件时， ‘\r’ 在 Win 与 Lin 处理方式的不同
+‘\r’ 在 Windows 是作为换行符的一种，因此在 Windows 系统中读取一行时，’\r’ 会被过滤掉。而 Linux 系统会把 ‘\r’ 作为一个普通的符号来处理。因此当开发跨平台程序时， ‘\n’ 与 ‘\r’ 等的处理一定要谨慎。
+
+具体来说，Windows在使用 fgets 函数读取文本文件时，当遇到 ‘\r\n’ 结尾的一行，会自动忽略 ‘\r’，而 Linux 不会忽略。（如果是以 ‘\r’ 结尾的一行，fgets函数会读取错误。）
+
+2018.1.17
+
+inline 与 链接
+// A.h
+class C
+{
+public:
+    void func();
+};
+1
+2
+3
+4
+5
+6
+// A.cpp
+void C::func() {} // 正确
+inline C::func() {} // 会导致链接错误
+1
+2
+3
+如果使用 A.cpp 生成一个静态链接库，那么使用了 inline 的话，会导致 C::func 未加入符号表中。
+
+inline 的正确用法是在头文件中直接进行定义。
+
+// X.h
+inline void func() {}
+1
+2
+这样在链接时不会出现重定义错误。
+
+2018.1.5
+
+位域结构体的 size
+位域结构体的 size 不能保证。其内存结构和成员对齐方式有关。
+
+编译器： MSVC 和 GCC
+输出： x64
+
+struct A
+{
+    uint8_t a : 2;
+    uint32_t b : 30;
+};
+
+sizeof(A); // MSVC 8, GCC 4
+1
+2
+3
+4
+5
+6
+7
+这种情况下，uint8_t 的出现影响了对齐，所以使用位域会出现非预期效果。
+
+解决方法：
+
+struct A
+{
+    uint32_t a : 2;
+    uint32_t b : 30;
+};
+
+sizeof(A); // MSVC 4, GCC 4
+1
+2
+3
+4
+5
+6
+7
+只在这两款编译器下进行了测试。
+
+标准没有明确地规定位域的大小计算方式。需要根据具体情况来处理。
+
+2017.12.30
+
+std::string 保存 ‘\0’
+C 语言的char*字符串以 \0 作为结尾。
+
+char msg[] = "Hello World!";
+msg[5] = '\0';
+printf("%s\n", msg);
+1
+2
+3
+这样输出结果是 Hello 。
+
+但是，这种情况放到 std::string 中就不一样了。因为 std::stirng 并没有规定以 \0 结尾。
+
+std::string msgx = "Hello World!";
+msgx[5] = '\0';
+std::cout << msgx << std::endl;
+1
+2
+3
+这样的输出结果会带有 \0， Hello\0World。
+
+如果使用 printf 输出 std::string，直接使用 c_str 是不行的。
+
+printf("%s\n", msgx.c_str());
+1
+这样不能完整地输出 msgx。
+
+2017.10.30
+
+for 循环的判断会重新计算
+一个比较基础的问题了，但是不注意可能会踩坑。
+
+int c = 8;
+for (int i = 0; i < c; i++) {
+  c--;
+}
+1
+2
+3
+4
+for 循环不会保存 c 的值，每次都要计算表达式 (i < c)。
+所以如果在循环中修改了判断时引用的变量（或者判断时调用的函数是不纯的），那么需要警惕。（STL容器进行for循环时，判断 end() 恰巧利用了这一点。）
+
+2017.10.19
+
+Linux 下 printf 输出不正常 （内嵌汇编的坑）
+在写 JitFFI 的时候，为了测试 long double 的传递特性，书写了下面的代码：
+
+void print_ld(long double ld) {
+    printf("%Lf\n", ld);
+    printf("0x%llX\n", *(uint64_t*)&ld);
+    printf("0x%llX\n", *((uint64_t*)&ld + 1));
+}
+void caller(void) {
+    asm("sub $0x8, %rsp");
+    asm("push $0x3fff");
+    asm("mov $0x8000000000000000, %rax");
+    asm("push %rax");
+    asm("call print_ld");
+    asm("add $0x18, %rsp");
+}
+int main(void)
+{
+    caller();
+    return 0;
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+正常情况下，caller 函数如下书写：
+
+void caller()
+{
+    print_ld(1.0);
+}
+1
+2
+3
+4
+应该会输出
+
+1.000000
+0x8000000000000000
+0x3FFF
+1
+2
+3
+但是实际上是（本机测试结果）：
+
+0.000000
+0x8000000000000000
+0x3fff
+1
+2
+3
+反汇编以后，对比内嵌汇编版本与正常版本，发现 main 的代码有点不一样：
+
+正常版本：
+
+sub $0x8, %rsp
+call caller
+mov $0x0, eax
+add $0x8, %rsp
+ret
+1
+2
+3
+4
+5
+内嵌汇编于 caller 的版本：
+
+call caller
+mov $0x0, eax
+ret
+1
+2
+3
+因为x64要求在调用函数时，%rsp 与16字节对齐，所以调用 print_ld 函数时，内嵌版本会出现对齐错误。print_ld 调用 第一个 printf 时，错误才显现出来。
+
+以上案例告诉我们，内嵌汇编不要随便写。。
+
+2017.10.16
+
+Linux 下死循环导致死机
+重构代码的时候，重写了一个带有循环函数。测试时候出现死循环导致死机。
+
+解决办法：
+在没有把握的情况下，加上assert用于测试。
+
+int JC = 0;
+while (true)
+{
+    assert(JC++ > 100000);
+}
+1
+2
+3
+4
+5
+保存 std::initializer_list 导致引用失效
+保存 std::initializer_list 可能会出现引用失效的问题。
+错误示例如下：
+
+class L
+{
+public:
+    L(const std::initializer_list<int> &list)
+        : list(list) {}
+
+private:
+    std::initializer_list<int> list;
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+解决办法：不保存std::initializer_list
+
+隐式转换导致的各种数值错误
+错误示例：
+
+using byte = uint8_t;
+
+void print(byte v)
+{
+    printf("%d\n", v);
+}
+
+print(2333); // Error!
+1
+2
+3
+4
+5
+6
+7
+8
+解决办法：
+1. 重视 warning
+2. 采取显式命名的方式：
+
+void print_byte(byte v)
+{
+    printf("%d\n", v);
+}
+1
+2
+3
+4
+printf 输出参数不加 \n
+printf 输出参数不加 \n，大致有两种错误形式。
+一种是两个参数混杂在一起，一种是在Linux下不能即时输出。
+
+void print(int v)
+{
+    printf("%d", v);
+}
+
+print(5);
+print(6);  // Output : 56
+1
+2
+3
+4
+5
+6
+7
+这种混杂在一定情况下可能是我们希望看到的，但是大部分情况都会扰乱视听，消耗巨大时间排除bug.
+
